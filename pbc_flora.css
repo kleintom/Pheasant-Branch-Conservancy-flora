@@ -45,6 +45,13 @@ li {
     font-family: georgia, serif;
 }
 
+ul {
+    margin-bottom: 15px;
+}
+li ul {
+    margin-bottom: 0px;
+}
+
 .outer {
     border-top: 1px solid black;
     border-bottom: 0px solid black;
