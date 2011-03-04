@@ -217,7 +217,7 @@ function get_todays_bloom_value() {
   else if ($today_day > 21) {
     $week = 3;
   }
-  return ($today_month*10 - 10) + $week;
+  return 10*($today_month - 2) + $week;
 }
 
 function deflate_date($date) {
