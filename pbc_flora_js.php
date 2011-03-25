@@ -1,6 +1,6 @@
 <?php
 /* 
-   @source: 
+   @source: https://github.com/kleintom/Pheasant-Branch-Conservancy-flora
    Copyright (C) 2011 Tom Klein
 
    This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// "exports" $link as the mysql connection
+// "exports" $mysql as the mysql connection
 require 'php_mysql_init.inc';
 ?>
 /* 
@@ -1116,9 +1116,9 @@ Array.prototype.contains = function(obj) {
 
 <?php
 ///////////////////////// Create the plant objects
-$result = mysql_query("select pbc_images,owen_images,arb_images,garner_images,
-  short_latin,bloom,invasive,wi,color,c_value,w_i,notes from flora", $link);
-while ($entries = mysql_fetch_array($result)) {
+$result = $mysql->query("select pbc_images,owen_images,arb_images,garner_images,
+  short_latin,bloom,invasive,wi,color,c_value,w_i,notes from flora");
+while ($entries = $result->fetch_assoc()) {
   $short_latin = $entries['short_latin'];
   $expand_collapse = $short_latin . "_ec";
   //// images
@@ -1195,6 +1195,7 @@ while ($entries = mysql_fetch_array($result)) {
 
 OUT;
 } // end while(entries)
+$result->free();
 ?>
 
 window.onload = function() {

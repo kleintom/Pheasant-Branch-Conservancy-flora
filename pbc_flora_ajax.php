@@ -1,6 +1,6 @@
 <?php
 /* 
-   @source: 
+   @source: https://github.com/kleintom/Pheasant-Branch-Conservancy-flora
    Copyright (C) 2011 Tom Klein
 
    This program is free software: you can redistribute it and/or modify
@@ -49,7 +49,7 @@ if ($CLEAN['new'] == 'true') {
   // the init code will log this connection
   $log_ip_string = "flora";
 }
-// "exports" $link as the mysql connection
+// "exports" $mysql as the mysql connection
 require 'php_mysql_init.inc';
 
 // the return document
@@ -63,13 +63,13 @@ if ($closeups) {
     $closeups_root = $xml_root->appendChild($xml->createElement('closeups'));
     if ($CLEAN['invasive'] == "true") {
       $closeups_root->appendChild($xml->createElement('invasives_only', 'true'));
-      $closeup_result = mysql_query("select common,short_latin,pbc_closeup,owen_closeup,arb_closeup,garner_closeup from flora where invasive!=\"\" order by color,common", $link);
+      $closeup_result = $mysql->query("select common,short_latin,pbc_closeup,owen_closeup,arb_closeup,garner_closeup from flora where invasive!=\"\" order by color,common");
     }
     else {
       $closeups_root->appendChild($xml->createElement('invasives_only', 'false'));
-      $closeup_result = mysql_query("select common,short_latin,pbc_closeup,owen_closeup,arb_closeup,garner_closeup from flora order by color,common", $link);
+      $closeup_result = $mysql->query("select common,short_latin,pbc_closeup,owen_closeup,arb_closeup,garner_closeup from flora order by color,common");
     }
-    while ($entries = mysql_fetch_array($closeup_result)) {
+    while ($entries = $closeup_result->fetch_assoc()) {
       $closeup_number = $entries["pbc_closeup"] . $entries['owen_closeup'] .
         $entries['arb_closeup'] . $entries['garner_closeup'];
       if ($closeup_number) {
@@ -83,6 +83,7 @@ if ($closeups) {
         $closeups_root->appendChild($thisCloseup);
       }
     }
+    $closeup_result->free();
   }
 } // end closeups
 
@@ -93,17 +94,17 @@ if ($bloom_order) {
   if($CLEAN['invasive'] == "true") {
     $bloom_root->appendChild($xml->createElement('invasives_only', 'true'));
     $bloom_result = 
-      mysql_query("select common,short_latin,bloom from flora where invasive!=\"\" order by $bloom_order", $link);
+      $mysql->query("select common,short_latin,bloom from flora where invasive!=\"\" order by $bloom_order");
   }
   else {
     $bloom_root->appendChild($xml->createElement('invasives_only', 'false'));
     $bloom_result = 
-      mysql_query("select common,short_latin,bloom from flora order by $bloom_order", $link);
+      $mysql->query("select common,short_latin,bloom from flora order by $bloom_order");
   }
   $bloom_root->appendChild($xml->createElement('order', $bloom_order));
   $bloom_root->appendChild($xml->createElement('bloom_code_today',
                                                get_todays_bloom_value()));
-  while ($entries = mysql_fetch_array($bloom_result)) {
+  while ($entries = $bloom_result->fetch_assoc()) {
     $code = $entries['bloom'];
     if ($code != '') {
       $this_bloom_data = $xml->createElement('bloom_data');
@@ -120,6 +121,7 @@ if ($bloom_order) {
       $bloom_root->appendChild($this_bloom_data);
     }
   }
+  $bloom_result->free();
 } // end bloom table
 
 ///////////////////////// start plant list
@@ -140,16 +142,16 @@ if ($order) {
   }
 
   if ($CLEAN['invasive'] != "true") {
-    $result = mysql_query("select common,latin,short_latin,family,aliases,color,created,w_i,c_value from flora order by $order_string", $link);
+    $result = $mysql->query("select common,latin,short_latin,family,aliases,color,created,w_i,c_value from flora order by $order_string");
   }
   else {
-    $result = mysql_query("select common,latin,short_latin,family,aliases,color,created,w_i,c_value from flora where invasive!=\"\" order by $order_string", $link);
+    $result = $mysql->query("select common,latin,short_latin,family,aliases,color,created,w_i,c_value from flora where invasive!=\"\" order by $order_string");
   }
 
   $list_root = $xml_root->appendChild($xml->createElement('list'));
   $list_root->appendChild($xml->createElement('order', $order));
 
-  while ($entries = mysql_fetch_array($result)) {
+  while ($entries = $result->fetch_assoc()) {
     $this_plant = $xml->createElement('plant');
     $this_plant->appendChild($xml->createElement('latin', $entries['latin']));
     $this_plant->appendChild($xml->createElement('short_latin',
@@ -194,11 +196,10 @@ if ($order) {
     }// end switch($order)
     $list_root->appendChild($this_plant);
   }
+  $result->free();
 
 } // end list
 echo $xml->saveXML();
-
-mysql_close($link);
 
 ////////////////////////////////////////
 ///////////////////////// end processing

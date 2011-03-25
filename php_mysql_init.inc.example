@@ -1,6 +1,6 @@
 <?php
 /* 
-   @source: 
+   @source: https://github.com/kleintom/Pheasant-Branch-Conservancy-flora
    Copyright (C) 2011 Tom Klein
 
    This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,42 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-if ($_SERVER['REMOTE_ADDR'] != "127.0.0.1") {
+// Setup the mysql database connection.
+//
+// If the database connection is successful, the following variables are set:
+//    $mysql : the database object
+//    $local : true if the client is from localhost, else false
+//    $imagepath : path to the images
+//
+// If $log_ip_string == true (set before this file is loaded), log connection
+// info to the visits table
+
+if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
   $local = false;
-  $link = mysql_connect('#####', '#####', '#####') or
-    die('Could not connect: ' . mysql_error());
-  mysql_select_db("#####", $link) or
-    die("Couldn't connect to database: " . mysql_error());
+  $mysql = new mysqli('#####', '#####', '#####', '#####');
+  if ($mysql->connect_error) {
+    die('Connect Error (' . $mysql->connect_errno . ') '
+        . $mysql->connect_error);
+  }
   $image_path = "flora_images/";
   if ($log_ip_string) {
     date_default_timezone_set('America/Chicago');
     $date = date('y-m-d H:i:s');
-    mysql_query('insert into visits set ip="' . 
-                mysql_real_escape_string($_SERVER['REMOTE_ADDR']) .
-                '",date="' . $date . '",browser="' . $log_ip_string . ': ' .
-                mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . '"',
-                $link);
+    $mysql->query('insert into visits set ip="' . 
+                  $mysql->real_escape_string($_SERVER['REMOTE_ADDR']) .
+                  '",date="' . $date . '",browser="' . $log_ip_string . ': ' .
+                  $mysql->real_escape_string($_SERVER['HTTP_USER_AGENT']) .
+                  '"');
   }
 }
 else { // client is local
   $local = true;
-  $link = mysql_connect('#####', '#####') or
-    die('Could not connect: ' . mysql_error());
-  mysql_select_db("#####", $link) or
-    die("Couldn't connect to database: " . mysql_error());
+  $mysql = new mysqli('#####', '#####');
+  if ($mysql->connect_error) {
+    die('Connect Error (' . $mysql->connect_errno . ') '
+        . $mysql->connect_error);
+  }
+  $mysql->select_db("#####");
   $image_path = "../pbc_flora/flora_images/";
 }
 
