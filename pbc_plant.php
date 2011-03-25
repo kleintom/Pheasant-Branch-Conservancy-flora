@@ -35,22 +35,22 @@
 
 ///////////////// mysql setup
 $log_ip_string = "plant"; // the init code will log this connection
-// "exports" $link for the mysql connection
+// "exports" $mysql for the mysql connection
 require './php_mysql_init.inc';
 ///////////////// end mysql setup
 
 // full lists of available plants
-$names_result = mysql_query("select common,latin,short_latin from flora order by common", $link)
-  or die("Names query failed: " . mysql_error());
+$names_result = $mysql->query("select common,latin,short_latin from flora order by common");
 
 $common_names = array();
 $latin_names = array();
 $short_latin_names = array();
-while ($entries = mysql_fetch_array($names_result)) {
+while ($entries = $names_result->fetch_assoc()) {
   $common_names[] = $entries['common'];
   $latin_names[] = $entries['latin'];
   $short_latin_names[] = $entries['short_latin'];
 }
+$names_result->free();
 
 // input plant(s)
 $plants = $_GET['plant'];
@@ -143,12 +143,10 @@ if ($verified_plant_count == 0) {
 }
 
 ///////////////////////// Display the verified plants
-$result = mysql_query("select * from flora where short_latin in ('" .
-                      implode("','", $verified_plants) . "') order by common;",
-                      $link)
-  or die($plant . " query failed: " . mysql_error());
+$result = $mysql->query("select * from flora where short_latin in ('" .
+                        implode("','", $verified_plants) . "') order by common;");
 
-while ($entry = mysql_fetch_array($result)) {
+while ($entry = $result->fetch_assoc()) {
 
   // images
   $images = '<div>';
@@ -266,6 +264,14 @@ while ($entry = mysql_fetch_array($result)) {
   </div>
 <?php
 }
+$result->free();
+?>
+
+</body>
+</html>
+
+<?php
+///////////////////////// Utility functions ///////////////////////////////////
 
 // convert the bloom period code into a readable string
 function code_to_string($code, $start_end) {
@@ -319,6 +325,3 @@ function verify_plants($input_plants, $short_latin_names) {
 }
 
 ?>
-
-</body>
-</html>
