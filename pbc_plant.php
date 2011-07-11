@@ -100,7 +100,7 @@ $full_site = $local ? "http://localhost/reduced_flora/pbc_flora.html" :
 ?>
 <form action="pbc_plant.php" id="float_form" method="get">
   <p>
-  <select name="plant[]" multiple="multiple" class="select">
+  <select name="plant[]" multiple="multiple" class="select" size="20">
 <?php
 // set the verified plants as selected
 $selected_plants = $verified_plants;
@@ -276,7 +276,7 @@ $result->free();
 // convert the bloom period code into a readable string
 function code_to_string($code, $start_end) {
 
-  static $dictionary = array(10=>"April",11=>"early April",12=>"mid April",13=>"late April",14=>"April",20=>"May",21=>"early May",22=>"mid May",23=>"late May",24=>"May",30=>"June",31=>"early June",32=>"mid June",33=>"late June",34=>"June",40=>"July",41=>"early July",42=>"mid July",43=>"late July",44=>"July",50=>"August",51=>"early August",52=>"mid August",53=>"late August",54=>"August",60=>"September",61=>"early September",62=>"mid September",63=>"late September",64=>"September",70=>"October",71=>"early October",72=>"mid October",73=>"late October",74=>"October");
+  static $dictionary = array(13=>"late March",20=>"April",21=>"early April",22=>"mid April",23=>"late April",24=>"April",30=>"May",31=>"early May",32=>"mid May",33=>"late May",34=>"May",40=>"June",41=>"early June",42=>"mid June",43=>"late June",44=>"June",50=>"July",51=>"early July",52=>"mid July",53=>"late July",54=>"July",60=>"August",61=>"early August",62=>"mid August",63=>"late August",64=>"August",70=>"September",71=>"early September",72=>"mid September",73=>"late September",74=>"September",80=>"October",81=>"early October",82=>"mid October",83=>"late October",84=>"October");
   if ($start_end == "start") {
     return $dictionary[intval(substr(strval($code),0,2))];
   }

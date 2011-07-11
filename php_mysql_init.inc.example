@@ -47,12 +47,11 @@ if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
 }
 else { // client is local
   $local = true;
-  $mysql = new mysqli('#####', '#####');
+  $mysql = new mysqli('#####', '#####', '#####', '#####');
   if ($mysql->connect_error) {
     die('Connect Error (' . $mysql->connect_errno . ') '
         . $mysql->connect_error);
   }
-  $mysql->select_db("#####");
   $image_path = "../pbc_flora/flora_images/";
 }
 
