@@ -88,7 +88,7 @@ if ($verified_plant_count > 0) {
   $plants_to_open = "?plant=" . implode(',', $verified_plants);
 }
 $full_site = $local ? "http://localhost/reduced_flora/pbc_flora.html" :
-  "http://mainwest.zxq.net/pbc_flora/pbc_flora.html";
+  "http://pheasantbranch.org/flora/index.html";
 ?>
 <p class="clearing">
   <a id="full_site_link" href="<?php echo $full_site ?><?php echo $plants_to_open ?>">Open the full plants website.</a>

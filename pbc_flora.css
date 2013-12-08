@@ -40,7 +40,6 @@ li {
 
 #pbc_title {
     color: #104010;
-    text-decoration: none;
     font-size: 1.1em;
     font-family: georgia, serif;
 }
@@ -55,10 +54,8 @@ li ul {
 .outer {
     border-top: 1px solid black;
     border-bottom: 0px solid black;
-/*    border-bottom: 2px solid black;*/
     border-left: 1px solid black;
     border-right: 1px solid black;
-/*    border: 2px solid black;*/
     margin: 0px 10px;
     background: #84A884;
     padding-top: 5px;
@@ -81,7 +78,6 @@ li ul {
     margin-bottom: 2px;
     overflow: hidden;
     display: none;
-/*margin: 10px 0px 0px 0px;*/
 }
 
 .loading {
@@ -117,7 +113,6 @@ li ul {
     font-weight: bold;
     padding-left: 10px;
     padding-right: 8px;
-    /*padding: 10px 10px 10px 10px;*/
 }
 
 .latin {
@@ -153,6 +148,10 @@ li ul {
     /*text-indent: -30px;*/
     margin-left: 30px;
     margin-bottom: 5px;
+}
+
+.attention {
+    color: #F1A41E
 }
 
 .expand_collapse {
@@ -242,7 +241,6 @@ li ul {
 .action_text {
     padding-left: 10px;
     cursor: pointer;
-/*    color: #476B47;*/
     color: #618B61;
 }
 
@@ -315,18 +313,14 @@ td, th {
     font-weight: normal;
 }
 thead .title {
-    /*text-transform:uppercase;*/
-    /*background: #395c39;*/
-    background: #3D663B;/*#1F341E;*/
+    background: #3D663B;
     color: #eee;
     border: 1px solid black;
     font-size: 1.5em;
 }
 thead .radio_title {
-    background: #598756;/*#385E36;*/
-/*1F341E;*/
+    background: #598756;
     color: #eee;
-    /*border: 1px solid black;*/
     font-size: 1.2em;
 }
 tbody th {
@@ -335,13 +329,12 @@ tbody th {
     border: 1px solid black;
 }
 .th_blooming {
-    background: #A5CCA5;/*#97BD97;*//*#95B795;*/
+    background: #A5CCA5;
     padding-left: 4px;
     padding-right: 4px;
-    /*border: 2px solid black;*/
 }
 th.table_header {
-    background: #598756;/*#395c39;*/
+    background: #598756;
     color: white;
     border: 1px solid black;
     font-style: italic;
@@ -373,7 +366,7 @@ th.table_header {
     border-right: 1px dashed black;
 }
 .td_0_today, .td_1_today, .td_2_today, .td_3_today, .td_march_today {
-    background: #A5CCA5;/*#84C084;*/
+    background: #A5CCA5;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
 }
@@ -383,10 +376,6 @@ table th a:link {
 table th a:visited {
     color: black;
 }
-/*table a:hover {
-    text-decoration: none;
-    color: #00f;
-}*/
 
 /* fixed footer http://www.noobcube.com/tutorials/html-css/fixed-header-footer-layout-a-beginners-guide-/*/
 #footer_wrap {
