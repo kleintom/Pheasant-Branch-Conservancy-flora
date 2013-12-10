@@ -134,66 +134,26 @@ if ($order) {
   $order_string_hash['flower'] = "isnull(color), color, common";
   $order_string_hash['bloom'] = "isnull(bloom), bloom, common";
   $order_string_hash['created'] = "created desc, common";
-  $order_string_hash['w_i'] = 'isnull(w_i), field(upper(w_i), "UPL-", "UPL", "UPL*", "UPL+",  "FACU-", "FACU", "FACU*", "FACU+", "FAC-", "FAC", "FAC*", "FAC+", "FACW-", "FACW", "FACW*", "FACW+", "OBL-", "OBL", "OBL*", "OBL+", "NI"), isnull(color), color, common';
+  $order_string_hash['w_i'] = 'isnull(w_i), field(upper(w_i), "UPL-", "UPL", "UPL*", "UPL+",  "FACU-", "FACU", "FACU*", "FACU+", "FAC-", "FAC", "FAC*", "FAC+", "FACW-", "FACW", "FACW*", "FACW+", "OBL-", "OBL", "OBL*", "OBL+", "NI"), isnull(color), common';
   $order_string_hash['c_value'] = "isnull(c_value), c_value desc, common";
   $order_string = $order_string_hash[$order];
   if ($order_string == '') {
     $order_string = 'common';
   }
 
-  if ($CLEAN['invasive'] != "true") {
-    $result = $mysql->query("select common,latin,short_latin,family,aliases,color,created,w_i,c_value from flora order by $order_string");
-  }
-  else {
-    $result = $mysql->query("select common,latin,short_latin,family,aliases,color,created,w_i,c_value from flora where invasive!=\"\" order by $order_string");
-  }
-
   $list_root = $xml_root->appendChild($xml->createElement('list'));
   $list_root->appendChild($xml->createElement('order', $order));
 
+  $maybe_invasives_only = '';
+  if ($CLEAN['invasive'] == "true") {
+    $maybe_invasives_only = 'where invasive!=""';
+  }
+  $result = $mysql->query("select short_latin from flora $maybe_invasives_only order by $order_string");
+
   while ($entries = $result->fetch_assoc()) {
     $this_plant = $xml->createElement('plant');
-    $this_plant->appendChild($xml->createElement('latin', $entries['latin']));
     $this_plant->appendChild($xml->createElement('short_latin',
                                                  $entries['short_latin']));
-    $this_plant->appendChild($xml->createElement('common', $entries['common']));
-    $this_plant->appendChild($xml->createElement('family', $entries['family']));
-    $this_plant->appendChild($xml->createElement('aliases',
-                                                 $entries['aliases']));
-    switch ($order) {
-
-    case "common":
-    case "bloom":
-    case "":
-    case "latin":
-    case "family":
-      break;
-
-    case "flower":
-      $this_plant->appendChild($xml->createElement('color',
-                                                   ucwords($entries['color'])));
-      break;
-
-    case "created":
-      $this_plant->appendChild($xml->createElement('created',
-                                                   deflate_date($entries['created'])));
-      break;
-
-    case "w_i":
-      $w_i = strtoupper($entries["w_i"]);
-      $color = ucwords($entries["color"]);
-      $this_plant->appendChild($xml->createElement('w_i', $w_i));
-      $this_plant->appendChild($xml->createElement('color', $color));
-      break;
-
-    case "c_value":
-      $this_plant->appendChild($xml->createElement('c_value',
-                                                   $entries['c_value']));
-      break;
-
-    default:
-      break;
-    }// end switch($order)
     $list_root->appendChild($this_plant);
   }
   $result->free();

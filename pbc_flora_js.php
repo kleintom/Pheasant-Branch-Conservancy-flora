@@ -51,17 +51,22 @@ pbc.plants = {};
 
 // data for one plant
 pbc.Plant = function(short_latin, image_list, flower_color, bloom, invasive,
-                     restricted, notes, c_value, wetland_indicator) {
+                     restricted, notes, c_value, wetland_indicator,
+                     common, latin, family, aliases) {
 
   this.short_latin = short_latin;
   this.image_list = image_list;
-  this.flower_color = flower_color;
+  this.color = flower_color;
   this.bloom = bloom;
   this.invasive = invasive;
   this.restricted = restricted;
   this.notes = notes;
   this.c_value = c_value;
-  this.wetland_indicator = wetland_indicator;
+  this.w_i = wetland_indicator;
+  this.common = common;
+  this.latin = latin;
+  this.family = family;
+  this.aliases = aliases;
 };
 /* control the display of this plant: action is "expand", "collapse",
    or "switch" (flip the current state) */
@@ -85,7 +90,7 @@ pbc.Plant.prototype.display = function(action) {
       // images
       var images_array = [];
       div_text += "<div>\\n";
-      for (var i=0, length = this.image_list.length; i < length; ++i) {
+      for (var i = 0, length = this.image_list.length; i < length; ++i) {
         var image = pbc.dom.ce('img', {'alt' : this.short_latin,
               'src' : "<?php echo $image_path ?>" +
               this.short_latin + this.image_list[i] + '.jpg'});
@@ -97,16 +102,16 @@ pbc.Plant.prototype.display = function(action) {
       components.push(images_div);
       // we display these properties if they're set;
       // "t" is text, "v" is value
-      var maybe_properties = [{t : 'Flower color:', v : this.flower_color},
+      var maybe_properties = [{t : 'Flower color:', v : this.color},
                               {t : 'Bloom period:', v : this.bloom},
                               {t : 'C value:', v : this.c_value},
                               {t : 'Wetland indicator:',
-                               v : this.wetland_indicator},
+                               v : this.w_i},
                               {t : '::Non-native::', v : this.invasive}];
                               
       for (var i = 0, length = maybe_properties.length; i < length; ++i) {
         var thisProperty = maybe_properties[i];
-        if (thisProperty.v) {
+        if (thisProperty.v != '') {
           components.push(pbc.dom.ce('span', {'class' : 'column'},
                                      [pbc.dom.tn(thisProperty.t)]));
           components.push(pbc.dom.tn(thisProperty.v));
@@ -144,13 +149,13 @@ pbc.Plant.prototype.display = function(action) {
   else if ((action == "collapse") || (action == "switch" && inner_is_open)) {
     document.getElementById(this.short_latin + '_inner').style.display = "none";
     document.getElementById(this.short_latin).style.borderBottom = "";
-    document.getElementById(this.short_latin + '_ec').src =
-      'expand.png';
+    document.getElementById(this.short_latin + '_ec').src = 'expand.png';
   }
 };
 
 ///////////////////////// Start ajax handling /////////////////////////////
-//// (in fact ajax isn't required at all, but we're using it anyway)
+//// (initially ajax was the source of more of the data, but at this point
+//// all we're using it for is getting sorted/trimmed plant lists from sql)
 /* return our standard ajax onreadystate change function; open_plants
    is the list of plants that were already open when the ajax request
    was made */
@@ -238,93 +243,14 @@ pbc.handle_ajax_closeups = function(dom) {
   }
 };
 
-/* "factory" for plant list data processors */
-pbc.xml_plant_processor = function(list_order) {
-
-  switch (list_order) {
-  case "common":
-  case "bloom":
-  case "":
-    var processor = pbc.plant_display_data(true);
-    processor.set_prefix_append_div(function() { return ''; });
-    processor.set_xml = processor.base_set_xml;
-    return processor;
-    break;
-  case "latin":
-    return (function() {
-      var that = pbc.plant_display_data(false);
-      that.set_xml = that.base_set_xml;
-      that.append_div = function(fragment) {
-        //  <span class="title"><span class="main_title"><span class="latin">' + this.latin + '</span></span> (' + this.common + ') [' + this.family + ']</span><br />
-        that.title_div().appendChild(
-          pbc.dom.ce('span', {'class' : 'title'},
-                     [pbc.dom.ce('span', {'class' : 'main_title'},
-                                 [pbc.dom.ce('span', {'class' : 'latin'},
-                                             [pbc.dom.tn(that.latin())])]),
-                      pbc.dom.tn(' (' + that.common() + ') [' + that.family() + ']')
-                      ]));
-        that.write_divs(fragment);
-      };
-      return that;
-    })();
-    break;
-  case "family":
-    return (function() {
-      var that = pbc.plant_display_data(false);
-      that.set_xml = that.base_set_xml;
-      that.append_div = function(fragment) {
-        //<span class="title"><span class="main_title">' + this.family + '</span> [' + this.common + ' (<span class="latin">' + this.latin + '</span>)]</span><br />
-        that.title_div().appendChild(
-          pbc.dom.ce('span', {'class' : 'title'},
-                     [pbc.dom.ce('span', {'class' : 'main_title'},
-                                 [pbc.dom.tn(that.family())]),
-                      pbc.dom.tn(' [' + that.common() + ' ('),
-                      pbc.dom.ce('span', {'class' : 'latin'},
-                                 [pbc.dom.tn(that.latin())]), pbc.dom.tn(')]')
-                      ]));
-        that.write_divs(fragment);
-      };
-      return that;
-    })();
-    break;
-  case "flower":
-    return pbc.extended_plant_display_data('color');
-    break;
-  case "created":
-    return pbc.extended_plant_display_data('created');
-    break;
-  case "w_i":
-    return pbc.extended_plant_display_data('w_i');
-    break;
-  case "c_value":
-    return pbc.extended_plant_display_data('c_value');
-    break;
-  default:
-    alert ("Processor not found: " + list_order);
-    var processor = pbc.plant_display_data(true);
-    processor.set_prefix_append_div(function() { return ''; });
-    processor.set_xml = processor.base_set_xml;
-    return processor;
-    break;
-  }
-};
-
-/* Plant_display_data provides base data for displaying plant list
- plants as well as method stubs for setting and displaying that data.
- Users of this object may extend this object by adding extra data, but
- in all cases users must fill in the set_xml and append_div function
- stubs.  set_xml takes an xml fragment as input and should fill in the
- extended object's data (this object's base_set_xml should be used for
- setting just this base object's data).  append_div takes an html
- fragment as input and should fill it in with the extended object's
- data (this object's set_prefix_append_div may be useful in the case
- where the displayed data takes the form 'prefix + standard
- presentation').  
-
- Pass prefix_display = true to have this object define its
- set_prefix_append_div function for displaying its data using the
- standard prefix format.*/
-pbc.plant_display_data = function(prefix_display) {
+/* plant_data_displayer is an object used for creating html fragments
+that display the title information for a given plant;
+get_data_from_xml retrieves plant data (for one plant) from an xml
+fragment, while append_div takes an html fragment as input and appends
+a plant entry for the input plant to the fragment; the list_order
+argument to the constructor determines what/in what order data is
+displayed*/
+pbc.plant_data_displayer = function(list_order) {
 
   //// private data (but see note on getters)
   // each plant display looks like title_div followed by inner_div
@@ -336,62 +262,9 @@ pbc.plant_display_data = function(prefix_display) {
   var latin = null;
   var short_latin = null;
   var family = null;
-  // end private data
-
-  var that = {}; // our return plant display object
-  //// set_xml and append_div MUST be set by the caller
-  // set this object's data values from an xml fragment argument
-  // (cf. base_set_xml)
-  that.set_xml = null; // function(plant_xml)
-  // fill in an html fragment argument with this object's data formatted for
-  // display
-  that.append_div = null; // function(fragment)
-  // defined below, but only if this is an object that displays its data in a
-  // standard prefix form (see note below)
-  that.set_prefix_append_div = null;
-
-  //// getters
-  // (Note that in fact these getters, as written, make this object's mutable 
-  // object data members PUBLIC since objects are returned by reference!  If
-  // it really mattered we would return clones, but it doesn't, so we don't.)
-  that.title_div = function() { return title_div; } // REFERENCE
-  that.inner_div = function() { return inner_div; } // REFERENCE
-  that.aliases_fragment = function() { return aliases_fragment; } // REFERENCE
-  that.common = function() { return common; }
-  that.latin = function() { return latin; }
-  that.short_latin = function() { return short_latin; }
-  that.family = function() { return family; }
-  //// end getters
-
-  // this object is created once but repopulated many times by base_set_xml, so
-  // be sure to reset every member
-  that.base_set_xml = function(plant_xml) {
-    var maybe_aliases = plant_xml.getElementsByTagName('aliases')[0].firstChild;
-    if (maybe_aliases) {
-      aliases_fragment = document.createDocumentFragment();
-      aliases_fragment.appendChild(document.createElement('br'));
-      var aliases_node = pbc.dom.ce('span', {'class' : 'alias'});
-      // (we use innerHTML for any text that may contain html markup)
-      aliases_node.innerHTML = 'Aliases: ' + maybe_aliases.data;
-      aliases_fragment.appendChild(aliases_node);
-    }
-    else {
-      aliases_fragment = null;
-    }
-    common = plant_xml.getElementsByTagName('common')[0].firstChild.data;
-    latin = plant_xml.getElementsByTagName('latin')[0].firstChild.data;
-    short_latin = plant_xml.getElementsByTagName('short_latin')[0].firstChild.data;
-    family = plant_xml.getElementsByTagName('family')[0].firstChild.data;
-    var image = pbc.dom.create_element('img',
-      {'class' : 'expand_collapse', 'id' : short_latin + '_ec',
-          'src' : 'expand.png', 'alt' : 'expand or collapse ' + latin});
-    title_div = pbc.dom.create_element('div',
-      {'id' : short_latin, 'class' : 'outer'}, [image]);
-    inner_div = pbc.dom.create_element('div',
-      {'id' : short_latin + '_inner', 'class' : 'inner'});
-  };
-
-  that.write_divs = function(fragment) {
+  var title_prefix_tag = '';
+  var title_prefix = null;
+  var write_divs = function(fragment) {
     // apparently appending a null child raises an exception
     if (aliases_fragment) {
       title_div.appendChild(aliases_fragment);
@@ -399,48 +272,101 @@ pbc.plant_display_data = function(prefix_display) {
     fragment.appendChild(title_div);
     fragment.appendChild(inner_div);
   };
+  // end private data
 
-  // almost all of the modes display a variable prefix plus a standard title,
-  // so we provide that functionality here for those cases
-  if (prefix_display) {
-    // prefix_function should return the prefix for the current data's display
-    that.set_prefix_append_div = function(prefix_function) {
-      that.append_div = function(fragment) {
-        // <span class="title"><span class="main_title">' prefix + this.common + '</span> (<span class="latin">' + this.latin + '</span>) [' + this.family + ']</span><br />;
-        title_div.appendChild(
-          pbc.dom.ce('span', {'class' : 'title'}, 
-                     [pbc.dom.ce('span', {'class' : 'main_title'},
-                                 [pbc.dom.tn(prefix_function() + common)]),
-                      pbc.dom.tn(' ('), 
-                      pbc.dom.ce('span', {'class' : 'latin'},
-                                 [pbc.dom.tn(latin)]),
-                      pbc.dom.tn(') [' + family + ']')
-                      ]));
-        that.write_divs(fragment);
-      };
-    };
-  }
+  var that = {}; // our return plant display object
+  that.short_latin = function() { return short_latin; }
+
+  // set this object's data values from an xml fragment argument
+  // this object is created once but repopulated many times by this
+  // function, so be sure to reset every member on every call
+  that.get_data_from_xml = function(plant_xml) {
+
+    short_latin = plant_xml.getElementsByTagName('short_latin')[0].firstChild.data;
+    var plant = pbc.plants[short_latin];
+    
+    if (plant.aliases) {
+      aliases_fragment = document.createDocumentFragment();
+      aliases_fragment.appendChild(document.createElement('br'));
+      var aliases_node = pbc.dom.ce('span', {'class' : 'alias'});
+      // (we use innerHTML for any text that may contain html markup)
+      aliases_node.innerHTML = 'Aliases: ' + plant.aliases;
+      aliases_fragment.appendChild(aliases_node);
+    }
+    else {
+      aliases_fragment = null;
+    }
+    common = plant.common;
+    latin = plant.latin;
+    family = plant.family;
+    var image = pbc.dom.create_element('img',
+      {'class' : 'expand_collapse', 'id' : short_latin + '_ec',
+          'src' : 'expand.png', 'alt' : 'expand or collapse ' + latin});
+    title_div = pbc.dom.create_element('div',
+      {'id' : short_latin, 'class' : 'outer'}, [image]);
+    inner_div = pbc.dom.create_element('div',
+      {'id' : short_latin + '_inner', 'class' : 'inner'});
+    if (title_prefix_tag) {
+      var maybe_prefix_value = plant[title_prefix_tag];
+      title_prefix = maybe_prefix_value ? maybe_prefix_value + ': ' : '';
+    }
+    else {
+      title_prefix = '';
+    }
+  };
+
+  // append_div takes a fragment as argument and adds this object's data to
+  // the fragment as appropriate, depending on list_order
+  that.append_div = (function() {
+
+      switch(list_order) {
+      case "common":
+      case "bloom":
+      case "color":
+      case "c_value":
+      case "w_i":
+        title_prefix_tag = list_order;
+        if (list_order === 'common' || list_order == 'bloom') {
+          title_prefix_tag = '';
+        }
+        return function(fragment) {
+          
+          title_div.innerHTML +=
+            '<span class="title"><span class="main_title">' +
+            title_prefix + common + ' (<span class="latin">' + latin +
+            '</span>) [' + family + ']</span>';
+          write_divs(fragment);
+        };
+        break;
+
+      case "latin":
+        title_prefix_tag = '';
+        return function(fragment) {
+          title_div.innerHTML +=
+            '<span class="title"><span class="main_title latin">' + latin +
+            '</span> (' + common + ') [' + family + ']</span>';
+          write_divs(fragment);
+        };
+        break;
+
+      case "family":
+        title_prefix_tag = '';
+        return function(fragment) {
+          title_div.innerHTML +=
+            '<span class="title"><span class="main_title">' + family +
+            '</span> [' + common + ' (<span class="latin">' + latin +
+            '</span>)]</span>';
+          write_divs(fragment);
+        };
+        break;
+
+      default:
+        alert ("oOps - bad list order: " + list_order);
+        break;
+      }//end switch
+    })();
+
   return that;
-};
-
-/* Extend plant_display_data by a single data item whose xml tag name
-is new_value_name.  Use the standard prefix display with the new value
-as the prefix. */
-pbc.extended_plant_display_data = function(new_value_name) {
-
-  return (function() {
-    var that = pbc.plant_display_data(true);
-    var new_value = null;
-    that.set_xml = function(plant_xml) {
-      var maybe_new_value =
-        plant_xml.getElementsByTagName(new_value_name)[0].firstChild;
-      new_value = maybe_new_value ? maybe_new_value.data : '';
-      that.base_set_xml(plant_xml);
-    };
-    that.set_prefix_append_div(function() {
-        return new_value ? new_value + ': ' : ''; });
-    return that;
-  })();
 };
 
 /* handle return data (dom) from an ajax request for new plant list
@@ -453,11 +379,14 @@ pbc.handle_ajax_list = function(dom, open_plants) {
     pbc.clear_timer("plant_list_loading");
     var list = dom.getElementsByTagName('plant');
     var order = dom.getElementsByTagName('order')[0].firstChild.data;
-    var data_processor = pbc.xml_plant_processor(order);
+    if (order === 'flower') {
+      order = 'color'; // oOps
+    }
+    var data_processor = pbc.plant_data_displayer(order);
     var fragment = document.createDocumentFragment();
     var latin_array = []; // remember the plants we add
     for (var i = 0, length = list.length; i < length; ++i) {
-      data_processor.set_xml(list[i]);
+      data_processor.get_data_from_xml(list[i]);
       data_processor.append_div(fragment);
       latin_array.push(data_processor.short_latin());
     }
@@ -1118,8 +1047,10 @@ Array.prototype.contains = function(obj) {
 
 <?php
 ///////////////////////// Create the plant objects
+// pbc.plants holds all data for each plant in the database
 $result = $mysql->query("select pbc_images,owen_images,arb_images,garner_images,
-  short_latin,bloom,invasive,wi,color,c_value,w_i,notes from flora");
+  short_latin,bloom,invasive,wi,color,c_value,w_i,notes,
+  common,latin,family,aliases from flora");
 while ($entries = $result->fetch_assoc()) {
   $short_latin = $entries['short_latin'];
   $expand_collapse = $short_latin . "_ec";
@@ -1188,12 +1119,17 @@ while ($entries = $result->fetch_assoc()) {
   //// notes
   $notes = strtr($entries['notes'], array("\n"=>""));
   // &#39; is the html entity for '
-  $notes = strtr($notes, array("'"=>'&#39;'));
+  $notes = strtr($notes, array("'"=>'&#39;'));  
+  $common = strtr($entries['common'], array("'"=>'&#39;'));
+  $latin = $entries['latin'];
+  $family = strtr($entries['family'], array("'"=>'&#39;'));
+  $aliases = strtr($entries['aliases'], array("'"=>'&#39;'));
   echo <<<OUT
     pbc.plants["$short_latin"] = 
     new pbc.Plant("$short_latin", $js_image_list,
                   "{$entries['color']}", "$bloom", "$inv_text", "$wi_text",
-                  '$notes', "{$entries['c_value']}", "$wetland_indicator");
+                  '$notes', "{$entries['c_value']}", "$wetland_indicator",
+                  '$common', '$latin', '$family', '$aliases');
 
 OUT;
 } // end while(entries)
