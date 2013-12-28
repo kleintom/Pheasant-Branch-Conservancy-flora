@@ -21,7 +21,7 @@
 require 'php_mysql_init.inc';
 ?>
 /* 
-   @source:
+   @source: https://github.com/kleintom/Pheasant-Branch-Conservancy-flora
    @licstart  The following is the entire license notice for the JavaScript
    code in this page.
 
