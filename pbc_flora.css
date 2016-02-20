@@ -5,79 +5,119 @@
     font-family: helvetica, sans-serif;
 }
 
-h1 {
-    font-size: 2.5em;
-    text-align: center;
-    font-family: georgia, serif;
-    font-style: italic;
-    color: #103110;
-    padding-top: 15px;
-    padding-bottom: 10px;
+img {
+    max-width: 100%;
 }
 
-h3 {
+/* start header css */
+#header {
+    padding: 4px 4px 0px 4px;
     text-align: center;
 }
 
-li {
-    margin-left: 40px;
-}
-
-#title_image {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    border: 2px solid black;
-    margin-top: 30px;
+#title_image_div {
+    display: inline-block;
 }
 
 #title_image_description {
-    margin-left: auto;
-    margin-right: auto;
     font-size: .8em;
-    width: 700px;
+    text-align: left;
 }
 
-#pbc_title {
+h1 {
+    font-family: georgia, serif;
+    font-style: italic;
+    color: #103110;
+}
+
+h1 a {
     color: #104010;
     font-size: 1.1em;
     font-family: georgia, serif;
 }
 
-ul {
-    margin-bottom: 15px;
-}
-li ul {
-    margin-bottom: 0px;
+.attention {
+    color: #F1A41E
 }
 
-.outer {
-    border-top: 1px solid black;
-    border-bottom: 0px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    margin: 0px 10px;
-    background: #84A884;
-    padding-top: 5px;
-    padding-bottom: 5px;
+#error {
+    font-size: 2em;
+    margin: 15px;
+    padding: 15px;
+    border: 2px solid pink;
+}
+/* end header css */
+
+/* start content css */
+.text {
+    max-width: 960px;
+}
+
+.text_title {
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+#site_notes_button {
+    cursor: pointer;
+    /* want this to be inline-block, but ie8 */
+    /* display: inline-block; */
+}
+
+#site_notes_img {
     clear: both;
 }
 
-.last_outer {
-    border-bottom: 1px solid black;
+#site_notes_content {
+    background: #f4f4f4;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    display: none;
+    max-width: 960px;
 }
 
-.inner {
-    background: #C6DCC6;
-    padding: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
-    border-left: 2px solid #598756;
-    border-bottom: 2px solid #598756;
-    border-right: 2px solid #598756;
-    margin-bottom: 2px;
-    overflow: hidden;
+#closeups_loading, #closeup_checks {
     display: none;
+}
+
+#closeups_box, #blooms_box {
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-top: 8px;
+}
+
+.link_text, .bloom_link_text {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#select_form {
+    padding: 1px;
+}
+
+#select_form_div {
+    float: left;
+}
+
+.select {
+    border: 1px solid black;
+}
+
+#plant_count {
+    float: left;
+    padding-top: 4px;
+    margin-left: 15px;
+}
+
+#plant_list_title {
+    /* If you don't clear this it takes on the width and height of all of the
+       floated closeups (which live a couple children deep in the *previous*
+       div), and that screws up height of element calculations. */
+    clear: both;
+}
+
+#plant_list_div {
+    margin-bottom: 10px;
 }
 
 .loading {
@@ -100,6 +140,434 @@ li ul {
     margin-bottom: 0px;
 }
 
+    /* start closeups css */
+    .closeup {
+        margin: 5px;
+        float: left;
+        width: 200px;
+        height: 250px;
+        border: 2px solid #598756;
+    }
+
+    .closeup_img {
+        border-bottom: 3px solid #C6DCC6;
+    }
+
+    .closeup_description {
+        width: 200px;
+        text-align: center;
+    }
+    /* end closeups css */
+
+    /* start plants list css */
+    .outer {
+        border-top: 1px solid black;
+        border-bottom: 0px solid black;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        background: #84A884;
+        clear: both;
+    }
+    /* the last outer plant div is special */
+    #plant_list_div > div:nth-last-child(2) {
+        border-bottom: 1px solid black;
+    }
+
+    .inner {
+        background: #C6DCC6;
+        padding: 10px;
+        margin-bottom: 2px;
+        border-left: 2px solid #598756;
+        border-bottom: 2px solid #598756;
+        border-right: 2px solid #598756;
+        overflow: hidden;
+        display: none;
+    }
+
+    .ter_title {
+        color: #444;
+    }
+    .column {
+        font-weight: bold;
+        padding-left: 10px;
+        padding-right: 8px;
+    }
+    .latin {
+        font-style: italic;
+    }
+    .title {
+        font-size: 1.05em;
+        font-weight: bold;
+    }
+    .main_title {
+        font-size: 1.15em;
+    }
+    .alias {
+        margin-left: 50px;
+        font-size: 1.1em;
+    }
+    .details {
+        background: #eee;
+    }
+    .image {
+        float: left;
+        margin: 10px 10px 0px 10px;
+        /* firefox and chrome differ at narrow widths; chrome doesn't require
+           this max-width or the .image specification below for narrow
+           viewports */
+        max-width: 100%;
+    }
+    br.clearing_break {
+        clear: both;
+    }
+    .notes {
+    /* hanging indent */
+        /*text-indent: -30px;*/
+        margin-left: 30px;
+        margin-bottom: 5px;
+    }
+
+    .expand_collapse_section, .expand_collapse {
+        cursor: pointer;
+        vertical-align: middle;
+    }
+    /* end plants list css */
+
+    #bloom_table_div {
+        display: none;
+    }
+
+/* end content css */
+
+/* start footer css */
+#footer_wrap {
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+}
+
+#footer {
+    background: #eee;
+    border-top: 1px solid black;
+    width: 100%;
+    overflow: hidden;
+}
+
+.action_text {
+    cursor: pointer;
+    color: #618B61;
+}
+
+#invasive_checkbox_div, #expand_collapse_div, #goto_element_div {
+    float: left;
+    padding-top: 5px;
+}
+
+#invasive_box {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.divider {
+    margin-left: 10px;
+}
+/* end footer css */
+
+@media (max-width: 799px) {
+    /* deactivated content for this medium: */
+    /* bloom_table_div is handled by js */
+    .sec_title, .alias, /* secondary plant list titles and aliases */
+    /* some of the bottom bar operations */
+    #invasive_checkbox_div, #expand_collapse_div, #goto_table {
+        display: none;
+    }
+
+    #content {
+        /* leave room for the footer bar */
+        margin-bottom: 45px;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        margin-left: 20px;
+    }
+
+    li {
+        margin-left: 0;
+        margin-bottom: 6px;
+        padding: 0;
+    }
+
+    .text {
+        margin-left: 12px;
+        margin-top: 4px;
+    }
+
+    /* start header css */
+    #header, #title_image_div {
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 1.7em;
+        padding: 15px 8px 10px 8px;
+    }
+
+    h3 {
+        max-width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    /* end header css */
+
+    /* start content css */
+    .text_title {
+        margin-left: 8px;
+    }
+
+    #site_notes_content {
+        padding: 8px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+    #site_notes_content ul {
+        margin-left: 8px;
+        margin-bottom: 4px;
+        padding: 0;
+    }
+
+    #site_notes_content li {
+        margin-left: 4px;
+    }
+
+    .link_text {
+        margin-left: 10px;
+    }
+
+        /* start plant list css */
+        .select {
+            margin: 4px 0px 10px 10px;
+        }
+
+        .outer {
+            margin: 0px 4px;
+            padding: 5px 5px 5px 32px;
+        }
+        .inner {
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+        .expand_collapse {
+            margin-left: -30px;
+            margin-right: 4px;
+        }
+        /* firefox and chrome differ here, but both will do what I want with
+           this margin (as long as images have width > ~400 there can't be
+           side-by-side imgs in this case, and full-size side by side imgs
+           don't seem to have this issue) */
+        .image {
+            margin: 5px 0;
+        }
+        /* end plant list css */
+    /* end content css */
+
+    /* start footer css */
+    .bottom_text {
+        margin-left: 8px;
+        margin-right: 4px;
+        padding-top: 4px;
+        padding-bottom: 8px;
+    }
+    #goto_element_div {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+        padding-top: 0;
+    }
+    .action_text {
+        padding-top: 7px;
+        padding-bottom: 6px;
+        display: table-cell;
+        text-align: center;
+        border-left: 1px solid grey;
+    }
+    div.action_text:first-child {
+        border-left: 0;
+    }
+    /* end footer css */
+}
+
+@media (min-width: 600px) and (max-width: 799px) {
+
+    #content {
+        /* leave room for the footer bar */
+        margin-bottom: 50px;
+    }
+    .outer {
+        padding: 5px 5px 5px 38px;
+    }
+    .expand_collapse {
+        margin-left: -32px;
+        margin-right: 6px;
+    }
+    /* show secondary titles and aliases */
+    .sec_title {
+        display: inline;
+    }
+    /* hide tertiary titles */
+    .ter_title {
+        display: none;
+    }
+    .alias {
+        display: inline;
+    }
+    #invasive_checkbox_div, #expand_collapse_div,
+    .divider {
+        display: inline-block;
+    }
+    #goto_element_div {
+        width: auto;
+        display: block;
+    }
+    .action_text {
+        display: inline-block;
+        text-align: left;
+        border-left: 0;
+        margin-left: 12px;
+    }
+    #footer {
+        padding-top: 4px;
+        padding-bottom: 8px;
+    }
+}
+
+@media (min-width: 700px) and (max-width: 799px) {
+    #expand_collapse_div {
+        display: inline-block;
+    }
+}
+
+@media (min-width: 800px) {
+
+    #content {
+        /* leave room for the footer bar */
+        margin-bottom: 55px;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        margin-left: 20px;
+    }
+
+    li {
+        margin-left: 0;
+        margin-bottom: 6px;
+        padding: 0;
+    }
+
+    .text {
+        margin-left: 16px;
+        margin-right: 8px;
+        margin-top: 4px;
+        max-width: 960px;
+    }
+
+    /* start header css */
+    h1 {
+        font-size: 2.5em;
+        padding: 15px 16px 10px 16px;
+    }
+
+    h1 a {
+        font-size: 1.1em;
+    }
+    /* end header css*/
+
+    /* start content css */
+    .text_title {
+        margin-left: 12px;
+    }
+
+    #site_notes_content {
+        padding: 8px;
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+    #site_notes_content ul {
+        margin-left: 12px;
+        margin-right: 6px;
+        margin-bottom: 4px;
+        padding: 0;
+    }
+
+    #site_notes_content li {
+        margin-left: 4px;
+    }
+
+    .link_text {
+        margin-left: 10px;
+    }
+
+        /* start plant list css */
+        .select {
+            margin: 4px 0px 10px 16px;
+        }
+
+        .outer {
+            margin: 0px 10px;
+            padding: 5px 5px 5px 40px;
+        }
+        .expand_collapse {
+            margin-left: -34px;
+            margin-right: 8px;
+        }
+        .inner {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        /* end plant list css */
+    /* end content css */
+
+    /* start footer css */
+    #footer {
+        padding-top: 6px;
+        padding-bottom: 12px;
+    }
+
+    .bottom_text {
+        margin-left: 16px;
+        margin-right: 8px;
+        padding-top: 4px;
+        padding-bottom: 8px;
+    }
+
+    .action_text {
+        display: inline-block;
+        margin-left: 24px;
+    }
+    /* end footer css */
+}
+
+@media (min-width: 900px) {
+    .action_text {
+        display: inline-block;
+        margin-left: 48px;
+    }
+}
+
+/* (where is this used?) */
+li ul {
+    margin-bottom: 0px;
+}
+
+/* start bloom css */
+#blooms_loading, #inner_blooms_div {
+    display: none;
+}
+
 .empty_inline_loading {
     clear: both;
     width: 90px;
@@ -109,102 +577,6 @@ li ul {
     margin-bottom: 0px;
 }
 
-.column {
-    font-weight: bold;
-    padding-left: 10px;
-    padding-right: 8px;
-}
-
-.latin {
-    font-style: italic;
-}
-
-.title {
-    margin-left: 5px;
-    font-size: 1.05em;
-    font-weight: bold;
-}
-
-.main_title {
-    font-size: 1.15em;
-}
-
-.alias {
-    margin-left: 50px;
-    font-size: 1.1em;
-}
-
-.details {
-    background: #eee;
-}
-
-.image {
-    float: left;
-    margin: 10px 10px 0px 10px;
-}
-
-.notes {
-    /* hanging indent */
-    /*text-indent: -30px;*/
-    margin-left: 30px;
-    margin-bottom: 5px;
-}
-
-.attention {
-    color: #F1A41E
-}
-
-.expand_collapse {
-    margin-left: 8px;
-    margin-right: 2px;
-    /*vertical-align: sub;*/
-}
-
-#select_form {
-    padding: 1px;
-    float: left;
-}
-
-#invasive_checkbox_div, #expand_collapse_div, #goto_element_div {
-    float: left;
-    padding-top: 5px;
-}
-
-#select_form_div {
-    float: left;
-}
-
-#invasive_box {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-#closeups_box, #blooms_box {
-    margin-left: 20px;
-    margin-right: 10px;
-}
-
-.closeup {
-    margin: 5px;
-    float: left;
-    width: 200px;
-    height: 250px;
-    border: 2px solid #598756;
-}
-
-.closeup_img {
-    border-bottom: 3px solid #C6DCC6;
-}
-
-.closeup_description {
-    width: 200px;
-    text-align: center;
-}
-
-.link_text, .bloom_link_text {
-    cursor: pointer;
-    text-decoration: underline;
-}
 .bloom_link_text {
     font-size: 1.2em;
 }
@@ -230,18 +602,7 @@ li ul {
 }
 
 #bloom_table_div {
-    margin-top: 50px;
-}
-
-.select {
-    margin: 10px 0px 10px 10px;
-    border: 1px solid black;    
-}
-
-.action_text {
-    padding-left: 10px;
-    cursor: pointer;
-    color: #618B61;
+    margin-top: 20px;
 }
 
 .expand_collapse_action_text {
@@ -255,54 +616,20 @@ li ul {
     text-decoration: underline;
 }
 
-.divider {
-    margin-left: 10px;
-}
-
-.text_title {
-    margin-left: -10px;
-    font-weight: bold;
-}
-
-.text, .bottom_text {
-    margin-left: 20px;
-    margin-right: 20px;
-    clear: both;
-    padding-top: 10px;
-}
-
-.bottom_text {
-    padding-bottom: 15px;
-}
-
-#plant_count_div {
-    float: left;
-    padding-top: 15px;
-    margin-left: 15px;
-}
-
-#plant_list_div {
-    margin-bottom: 10px;
-}
-
-
-.clearing_break {
-    clear: both;
-}
-
-#error {
-    font-size: 2em;
-    margin: 15px;
-}
-
-/* table */
+/* begin table css */
 table {
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px;
+    margin-top: 12px;
     margin-bottom: 20px;
+    padding-left: 6px;
+    padding-right: 6px;
     border: 1px solid black;
+}
+#inner_blooms_div {
+    margin-left: 8px;
+    margin-right: 8px;
 }
 td, th {
     border-collapse: collapse;
@@ -356,7 +683,7 @@ th.table_header {
 .td_0_on, .td_0_off {
     border-left: 1px dashed black;
     border-right: 0px;
-} 
+}
 .td_1_on, .td_1_off, .td_2_on, .td_2_off {
     border-left: 0px;
     border-right: 0px;
@@ -376,27 +703,11 @@ table th a:link {
 table th a:visited {
     color: black;
 }
+/* end table css */
+/* end bloom css */
 
-/* fixed footer http://www.noobcube.com/tutorials/html-css/fixed-header-footer-layout-a-beginners-guide-/*/
-#footer_wrap {
-    position: fixed;
-    bottom: 0px;
-    left: 0;
-    width: 100%;
-}
-
-#footer_container {
-    height: 30px;
-    background: #eee;
-    border-top: 1px solid black;
-}
-
-#footer {
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
-}
-
-#scrolling_container {
-    margin-bottom: 30px;
+/* We hide a bunch of stuff until the plant data arrives */
+#closeups_title, #closeups_div, #plant_list_title, #select_form_div,
+#plant_list_loading, #bloom_table_div, #footer_wrap {
+    display: none;
 }

@@ -1,85 +1,99 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html>
 
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PBC flora</title>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="pbc_flora.css" />
-  <script type="text/javascript" src="pbc_flora_js.php"></script>
+  <link rel="stylesheet" href="pbc_flora.css" />
+  <script src="mq_polyfill.js"></script>
+  <script src="pbc_flora_js.php"></script>
 </head>
 
 <body>
 
-<div id="scrolling_container">
+<div id="header">
 
-  <!--<div id="title_image_div"><img id="title_image" src="tri_fall.jpg" alt="stiff gentian, cream gentian, bottle gentian" /></div>-->
-  <div id="title_image_div"><img id="title_image" src="tri_image.jpg" alt="pasqueflower, spiderwort, marsh marigold" /></div>
-  <div id="title_image_description">pasqueflower, spiderwort, marsh marigold</div>
-  <!--<div id="title_image_description">stiff gentian, cream gentian, bottle gentian</div>-->
+  <div id="title_image_div">
+    <img src="tri_image.jpg" alt="pasqueflower, spiderwort, marsh marigold" />
+    <div id="title_image_description">
+      pasqueflower, spiderwort, marsh marigold
+    </div>
+  </div>
 
-  <h1>Some plants of <a id="pbc_title" href="http://www.pheasantbranch.org/">Pheasant Branch Conservancy</a></h1>
-  
+  <h1>Some plants of
+    <a href="http://www.pheasantbranch.org/">Pheasant Branch Conservancy</a>
+  </h1>
+
   <h3>Corrections and suggestions encouraged!  Email pbcflora@gmail.com</h3>
-  
-  <div id="error"><noscript><p>Sorry, this site requires scripting (javascript) to be enabled - the content on this page is incomplete.</p></noscript></div>
 
-  <div class="text text_title">PBC fauna</div>
-  <ul>
-    <li>There is a companion website to this one covering the
-      <a href="../fauna/">smaller fauna of Pheasant Branch</a>, with
-      links to other available information on the fauna of the
-      conservancy.
-    </li>
-  </ul>
+  <noscript><p id="error">Sorry, this site requires scripting
+  (javascript) to be enabled - the content on this page is
+  incomplete.</p></noscript>
+
+</div><!-- end header -->
+
+<div id="content">
+  <div class="text_title">PBC fauna</div>
+  <p class="text">
+    There is a companion website to this one covering the
+      <a href="../fauna/">smaller fauna of Pheasant Branch</a>, with links to
+      other available information on the fauna of the conservancy.
+  </p>
 
   <!-- Notes -->
-  <div class="text text_title">Notes</div>
-  <ul>
-    <li> Bloom periods on this page are from Theodore S. Cochrane,
-      Kandis Elliot, Claudia S. Lipke,
-      &#8220;<a href="http://uwpress.wisc.edu/books/4417.htm">Prairie
-      Plants of the University of Wisconsin-Madison
-      Arboretum</a>&#8221;, University of Wisconsin Press, 2008 or
-      from the webpages of
-      the <a href="http://www.botany.wisc.edu/wisflora/">Wisconsin
-      State Herbarium, University of Wisconsin-Madison</a>.
-    </li>
-    <li>
-      <a rel="license"
-      href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
-        <img alt="Creative Commons License" style="border-width:0"
-        src="cc_by-nc-sa_88x31.png" /></a> The images on this page are
-        licensed under a <a rel="license"
-        href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative
-        Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
-        License</a>.
-    </li>
-    <li>
-      All of the listed plants can be found in the county (northern
-      one third or so) portion of Pheasant Branch Conservancy, but the
-      photo locations vary (mostly) amongst Pheasant Branch, Owen
-      Park, and the UW Arboretum.
-    </li>
-    <li>
-      This site, including images and accompanying text, was created
-      and is maintained by Tom Klein.  <strong>I'm an amateur at plant
-      identification: plant names associated with pictures on this
-      site are my best effort at identification, but my work has not
-      been verified by any expert.  If you believe I have
-      misidentified a plant please email me at pbcflora@gmail.com.</strong>
-    </li>
-  </ul>
+  <div class="text_title">
+    <span id="site_notes_button">
+      Notes
+      <img src="down.png" alt="expand or collapse Notes section"
+           class="expand_collapse_section" id="site_notes_img"></img>
+    </span>
+  </div>
+
+  <div id="site_notes_content">
+    <ul>
+      <li> Bloom periods on this page are from Theodore S. Cochrane, Kandis
+        Elliot, Claudia S. Lipke,
+        &#8220;<a href="http://uwpress.wisc.edu/books/4417.htm">Prairie Plants
+        of the University of Wisconsin-Madison Arboretum</a>&#8221;, University
+        of Wisconsin Press, 2008 or from the webpages of
+        the <a href="http://www.botany.wisc.edu/wisflora/">Wisconsin State
+        Herbarium, University of Wisconsin-Madison</a>.
+      </li>
+      <li>
+        <a rel="license"
+           href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+          <img alt="Creative Commons License" style="border-width:0"
+               src="cc_by-nc-sa_88x31.png" /></a> The images on this page are
+        licensed under a
+        <a rel="license"
+           href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative
+          Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
+          License</a>.
+      </li>
+      <li>
+        All of the listed plants can be found in the county (northern one third
+        or so) portion of Pheasant Branch Conservancy, but the photo locations
+        vary (mostly) amongst Pheasant Branch, Owen Park, and the UW Arboretum.
+      </li>
+      <li>
+        This site, including images and accompanying text, was created and is
+        maintained by Tom Klein.  <strong>I'm an amateur at plant
+        identification: plant names associated with pictures on this site are my
+        best effort at identification, but my work has not been verified by any
+        expert.  If you believe I have misidentified a plant please email
+        pbcflora@gmail.com.</strong>
+      </li>
+    </ul>
+  </div>
 
   <!-- closeups -->
+  <div class="text_title" id="closeups_title">Flower closeups</div>
   <div id="closeups_div">
     <p class="text">
-      <span class="text_title">Flower closeups for some common plants</span><br />
-      Check the box below to display closeups of selected flowers,
-      ordered by flower color.  The images displayed here are smaller
-      and more condensed than those in the full plants list, which
-      should make them <span class="attention">a better place to start
-        for identifying a mystery flower</span>.
+      Check the box below to display closeups of selected common flowers,
+      ordered by flower color.  <span class="attention">This may be faster than
+      browsing the Full Plant List one by one</span>.
     </p>
     <form id="closeups_form" action="">
       <p>
@@ -87,9 +101,8 @@
         Display select flower closeups
       </p>
     </form>
-    <div class="empty_inline_loading" id="closeups_loading"
-         style="display: none"></div>
-    <div class="text" id="closeup_checks" style="display: none">
+    <div class="empty_inline_loading" id="closeups_loading"></div>
+    <div class="text" id="closeup_checks">
       <span class="link_text" id="open_checks">
         Open checked plants in the plant list</span><br />
       <span class="link_text" id="clear_checkboxes">
@@ -97,22 +110,15 @@
     </div>
     <div id="inner_closeups_div"></div>
   </div>
-  
+
   <!-- plant list -->
-  <div id="plant_list_title_div">
-    <p class="text">
-      <span class="text_title" id="plant_list_title">Full Plant
-      List</span><br /> The plant list provides name information for
-      various forbs, grasses, sedges, bushes, and trees.<br />
-      <strong> Click the arrow next to any plant name to get images, further
-      information, and links to more complete data for that plant.</strong>
-    </p>
-  </div>
+  <div class="text_title" id="plant_list_title">Full Plant List</div>
   <div id="select_form_div">
     <form id="select_form" action="">
       <p>
         <select class="select" id="sort_value" name="sort_value">
-          <option id='select_form_common' value="common">Order by common name</option>
+          <option id='select_form_common' value="common"
+                  selected="selected">Order by common name</option>
           <option value="latin">Order by scientific name</option>
           <option value="family">Order by family name</option>
           <option value="flower">Order by flower color</option>
@@ -123,21 +129,21 @@
       </p>
     </form>
   </div>
-  <div id="plant_count_div"><span id="plant_count"></span></div>
+  <div id="plant_count"></div>
   <div class="loading" id="initial_plant_list_loading"></div>
   <div class="inline_loading" id="plant_list_loading"></div>
   <div id="plant_list_div"></div>
-  
+
   <!-- bloom table -->
   <div id="bloom_table_div">
+    <div class="text_title">Blooming periods table</div>
     <p class="text">
-      <span class="text_title">Blooming periods table</span><br />
       Check the box below to display a table of bloom periods for the
       species in the plant list.
     </p>
     <form id="blooms_form" action="">
       <p>
-        <input type="checkbox" id="blooms_box" value="blooms" />
+        <input type="checkbox" id="blooms_box" value="blooms"/>
         Display blooming periods table
       </p>
     </form>
@@ -154,16 +160,25 @@
               <form id="bloom_form" action="">
                 <p>
                   Order by:
-                  <input type="radio" class="bloom_radio" name="bloom_order" id="bloom_radio_date_option" value="bloom,common" />bloom start date
-                  <input type="radio" class="bloom_radio" name="bloom_order" id="bloom_radio_common_option" value="common" />common name
+                  <input type="radio" class="bloom_radio" name="bloom_order"
+                         id="bloom_radio_date_option" value="bloom,common"
+                         checked="checked"/>
+                  bloom start date
+                  <input type="radio" class="bloom_radio" name="bloom_order"
+                         id="bloom_radio_common_option" value="common" />
+                  common name
                 </p>
               </form>
             </th>
           </tr>
           <tr>
             <th class="table_header" scope="col" colspan="30">
-              <span class="bloom_link_text" id="bloom_open_checks" style="padding-right: 40px;">Open checked plant(s)</span>
-              <span class="bloom_link_text" id="bloom_clear_checks">Clear all checks</span>
+              <span class="bloom_link_text" id="bloom_open_checks">
+                Open checked plant(s)
+              </span>
+              <span class="bloom_link_text" id="bloom_clear_checks">
+                Clear all checks
+              </span>
             </th>
           </tr>
           <tr>
@@ -181,50 +196,50 @@
       </table>
     </div>
   </div>
-  
+
   <!-- links -->
   <div id="links_div">
+    <div class="text_title">Links</div>
     <p class="bottom_text">
-      <span class="text_title">Some links<br /></span>
       <a href="http://www.efloras.org/flora_page.aspx?flora_id=1">EFlora: Flora of North America</a> - not yet complete but for the plants covered a thorough technical treatment.<br />
-      <a href="http://wisplants.uwsp.edu/namesearch.html">Robert W. Freckmann Herbarium, UW Stevens Point</a><br />
+      <!--<a href="http://wisplants.uwsp.edu/namesearch.html">Robert W. Freckmann Herbarium, UW Stevens Point</a><br />-->
+      <a href="http://wisflora.herbarium.wisc.edu/index.php">Flora of Wisconsin</a><br />
       <a href="http://www.botany.wisc.edu/wisflora/">Wisflora: Wisconsin Vascular Plant Species (UW Madison herbarium)</a><br />
       <a href="http://www.illinoiswildflowers.info/">Illinois wildflowers</a><br />
       <a href="http://michiganflora.net/home.aspx">Michigan flora - University of Michigan Herbarium</a><br />
       <a href="http://www.minnesotawildflowers.info/page/home">Minnesota wildflowers</a><br />
       <a href="http://www.missouriplants.com/">Missouri plants</a><br />
-      <a href="http://www.eeob.iastate.edu/research/iowagrasses/index.html">Grasses of Iowa</a><br />
+      <a href="http://www.eeob.iastate.edu/research/IowaGrasses">Grasses of Iowa</a><br />
       <a href="http://www.kswildflower.org/index.php">Kansas wildflowers and grasses</a><br />
-      <a href="http://homepage.mac.com/chpeirce/wildflowers/index.html">Michigan wildflowers</a><br />
       <a href="http://dnr.wi.gov/topic/Invasives/">Wisconsin invasives (DNR)</a><br />
     </p>
     <p class="bottom_text">
-      <a href="http://wisplants.uwsp.edu/wetind.html">Wetland
+      <a href="https://web.archive.org/web/20100925100044/http://wisplants.uwsp.edu/wetind.html">Wetland
 	Indicators</a><br />
-      <a href="http://wisplants.uwsp.edu/WFQA.html">Coefficients
+      <a href="https://web.archive.org/web/20101212205245/http://wisplants.uwsp.edu/WFQA.html">Coefficients
 	of Conservatism</a>, also known as C Values
+    </p>
   </div> <!-- end links_div -->
-  
-</div> <!-- end scrolling_container div -->
+
+</div> <!-- end content div -->
 
 <div id="footer_wrap">
-  <div id="footer_container">
-    <div id="footer">		
-      <div id="invasive_checkbox_div">
-        <input type="checkbox" id="invasive_box" value="invasive" />Non-natives only
-        <span class="divider">::</span>
-      </div>
-      <div id="expand_collapse_div">
-        <!--<span class="expand_collapse_action_text" id="expand_text">Expand all</span>-->
-        <span class="expand_collapse_action_text" id="collapse_text">Collapse all</span>
-        <span class="divider">::</span>
-      </div>
-      <div id="goto_element_div">
-        <span class="action_text" id="goto_closeups">Closeups</span>
-        <span class="action_text" id="goto_list">Plant list</span>
-        <span class="action_text" id="goto_table">Bloom table</span>
-        <span class="action_text" id="goto_links">Links</span>
-      </div>
+  <div id="footer">
+    <div id="invasive_checkbox_div">
+      <input type="checkbox" id="invasive_box" value="invasive" />Non-natives only
+      <span class="divider">::</span>
+    </div>
+    <div id="expand_collapse_div">
+      <span class="expand_collapse_action_text" id="collapse_text">
+        Collapse all
+      </span>
+      <span class="divider">::</span>
+    </div>
+    <div id="goto_element_div">
+      <div class="action_text" id="goto_closeups">Closeups</div>
+      <div class="action_text" id="goto_list">Plant list</div>
+      <div class="action_text" id="goto_table">Bloom table</div>
+      <div class="action_text" id="goto_links">Links</div>
     </div>
   </div>
 </div>

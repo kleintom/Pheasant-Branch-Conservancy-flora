@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
    @source: https://github.com/kleintom/Pheasant-Branch-Conservancy-flora
    Copyright (C) 2011 Tom Klein
 
@@ -7,12 +7,12 @@
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -20,7 +20,7 @@
 // "exports" $mysql as the mysql connection
 require 'php_mysql_init.inc';
 ?>
-/* 
+/*
    @source: https://github.com/kleintom/Pheasant-Branch-Conservancy-flora
    @licstart  The following is the entire license notice for the JavaScript
    code in this page.
@@ -83,7 +83,7 @@ pbc.Plant.prototype.display = function(action) {
       document.getElementById(this.short_latin + '_inner').firstChild;
     if (!inner_content) { // display this plant's data
       document.getElementById(this.short_latin + '_ec').src =
-        'collapse.png';
+        'collapse-r.png';
       var fragment = document.createDocumentFragment();
       var components = [];
       var div_text = "";
@@ -108,7 +108,7 @@ pbc.Plant.prototype.display = function(action) {
                               {t : 'Wetland indicator:',
                                v : this.w_i},
                               {t : '::Non-native::', v : this.invasive}];
-                              
+
       for (var i = 0, length = maybe_properties.length; i < length; ++i) {
         var thisProperty = maybe_properties[i];
         if (thisProperty.v != '') {
@@ -131,7 +131,7 @@ pbc.Plant.prototype.display = function(action) {
       // we let the browser parse anything that contains html text
       notes_div.innerHTML = this.notes;
       components.push(notes_div);
-      
+
       var data_div = pbc.dom.ce('div', {}, components);
       document.getElementById(this.short_latin).style.borderBottom =
         "1px solid black";
@@ -140,7 +140,7 @@ pbc.Plant.prototype.display = function(action) {
     }
     else { // content already exists, just show it
       document.getElementById(this.short_latin + '_ec').src =
-        'collapse.png';
+        'collapse-r.png';
       document.getElementById(this.short_latin).style.borderBottom =
         "1px solid black";
       plant_inner.style.display = "block";
@@ -149,7 +149,7 @@ pbc.Plant.prototype.display = function(action) {
   else if ((action == "collapse") || (action == "switch" && inner_is_open)) {
     document.getElementById(this.short_latin + '_inner').style.display = "none";
     document.getElementById(this.short_latin).style.borderBottom = "";
-    document.getElementById(this.short_latin + '_ec').src = 'expand.png';
+    document.getElementById(this.short_latin + '_ec').src = 'expand-r.png';
   }
 };
 
@@ -204,7 +204,7 @@ pbc.handle_ajax_closeups = function(dom) {
         thisCloseup.getElementsByTagName('common')[0].firstChild.data;
       var latin = thisCloseup.getElementsByTagName('short_latin')[0].firstChild.data;
       latin_array.push(latin);
-      var image_number = 
+      var image_number =
         thisCloseup.getElementsByTagName('image_number')[0].firstChild.data;
       //<div class="closeup"><img class="closeup_img" src="' + '../pbc_flora/flora_images/' + latin + '_' + image_number + 'c.jpg" alt="' + common + '"/><br /><div class="closeup_description"><input type="checkbox" class="inline_checkbox" id="' + latin + '_checkbox"/><span class="link_text" id="' + latin + '_closeup">' + common + '</span></div></div>;
       var text = document.createTextNode(common);
@@ -284,7 +284,7 @@ pbc.plant_data_displayer = function(list_order) {
 
     short_latin = plant_xml.getElementsByTagName('short_latin')[0].firstChild.data;
     var plant = pbc.plants[short_latin];
-    
+
     if (plant.aliases) {
       aliases_fragment = document.createDocumentFragment();
       aliases_fragment.appendChild(document.createElement('br'));
@@ -301,7 +301,7 @@ pbc.plant_data_displayer = function(list_order) {
     family = plant.family;
     var image = pbc.dom.create_element('img',
       {'class' : 'expand_collapse', 'id' : short_latin + '_ec',
-          'src' : 'expand.png', 'alt' : 'expand or collapse ' + latin});
+          'src' : 'expand-r.png', 'alt' : 'expand or collapse ' + latin});
     title_div = pbc.dom.create_element('div',
       {'id' : short_latin, 'class' : 'outer'}, [image]);
     inner_div = pbc.dom.create_element('div',
@@ -330,11 +330,13 @@ pbc.plant_data_displayer = function(list_order) {
           title_prefix_tag = '';
         }
         return function(fragment) {
-          
+
           title_div.innerHTML +=
             '<span class="title"><span class="main_title">' +
-            title_prefix + common + ' (<span class="latin">' + latin +
-            '</span>) [' + family + ']</span>';
+            title_prefix + common +
+            ' <span class="sec_title">(<span class="latin">' + latin +
+            '</span>) <span class="ter_title">:: ' + family +
+            '</span></span></span>';
           write_divs(fragment);
         };
         break;
@@ -344,7 +346,8 @@ pbc.plant_data_displayer = function(list_order) {
         return function(fragment) {
           title_div.innerHTML +=
             '<span class="title"><span class="main_title latin">' + latin +
-            '</span> (' + common + ') [' + family + ']</span>';
+            '</span> <span class="sec_title">(' + common +
+            ') <span class="ter_title">:: ' + family + '</span></span></span>';
           write_divs(fragment);
         };
         break;
@@ -354,8 +357,9 @@ pbc.plant_data_displayer = function(list_order) {
         return function(fragment) {
           title_div.innerHTML +=
             '<span class="title"><span class="main_title">' + family +
-            '</span> [' + common + ' (<span class="latin">' + latin +
-            '</span>)]</span>';
+            '</span><br />' + common +
+            ' (<span class="latin">' + latin +
+            '</span>)';
           write_divs(fragment);
         };
         break;
@@ -390,8 +394,6 @@ pbc.handle_ajax_list = function(dom, open_plants) {
       data_processor.append_div(fragment);
       latin_array.push(data_processor.short_latin());
     }
-    // the last one is special (TODO: this will break)
-    fragment.lastChild.previousSibling.setAttribute('class', 'outer last_outer');
     pbc.dom.replace_children(document.getElementById("plant_list_div"), fragment);
     pbc.list_plants = latin_array;
     pbc.update_onclick_handlers(latin_array, '_ec', 'switch');
@@ -532,7 +534,7 @@ pbc.closeups_oncheck_function = function() {
       pbc.update_event_handler("click", document.getElementById("clear_checkboxes"), pbc.clear_closeup_checks);
     }
   }
-  else { // closeups not checked    
+  else { // closeups not checked
     document.getElementById("closeup_checks").style.display = "none";
     document.getElementById("inner_closeups_div").style.display = "none";
   }
@@ -587,7 +589,7 @@ pbc.bloom_function = function() {
 
 /* return the value of the bloom table order radio buttons */
 pbc.get_bloom_order = function() {
-  
+
   var bloom_form = document.getElementById("bloom_form");
   if (bloom_form) {
     var bloom_radio_array = bloom_form.bloom_order;
@@ -613,11 +615,11 @@ pbc.get_bloom_row = function(bloom_start, bloom_end, bloom_code_today) {
     if (bloom_code_today == 13) {
       on_today = "today";
     }
-    td_array.push(pbc.dom.ce('td', {'class' : 'td_march_' + on_today}, 
+    td_array.push(pbc.dom.ce('td', {'class' : 'td_march_' + on_today},
                              [pbc.dom.tn('\u00A0')]));
   }
   else {
-    td_array.push(pbc.dom.ce('td', {'class' : 'td_march_off'}, 
+    td_array.push(pbc.dom.ce('td', {'class' : 'td_march_off'},
                              [pbc.dom.tn('\u00A0')]));
   }
   // April to October
@@ -631,7 +633,7 @@ pbc.get_bloom_row = function(bloom_start, bloom_end, bloom_code_today) {
 	  on_off = "today";
 	}
       }
-      td_array.push(pbc.dom.ce('td', {'class' : 'td_' + j + '_' + on_off}, 
+      td_array.push(pbc.dom.ce('td', {'class' : 'td_' + j + '_' + on_off},
                                [pbc.dom.tn('\u00A0')]));
     }
   }
@@ -757,7 +759,7 @@ pbc.create_checks_clearer = function(get_checks_function,
 };
 
 pbc.box_is_checked = function(box_id) {
-  
+
   // we may use the return value as an object index, so don't return a bool
   // since IE doesn't allow it as an index
   var box = document.getElementById(box_id);
@@ -927,7 +929,7 @@ pbc.height_of_element = function(element) {
 };
 
 pbc.scroll_to_element = function(element_id) {
-  
+
   var element = document.getElementById(element_id);
   if (element) {
     window.scrollTo(0, pbc.height_of_element(element));
@@ -969,13 +971,13 @@ pbc.dom.create_element = function(type, attributes, children) {
 /* naming exception being made here for clarity in use */
 pbc.dom.ce = pbc.dom.create_element;
 /* createTextNode is some kind of weird wrapper object that you can't reference directly... */
-pbc.dom.tn = function(text) { 
+pbc.dom.tn = function(text) {
   return document.createTextNode(text);
 };
 
 /* http://stackoverflow.com/questions/683366/remove-all-the-children-dom-elements-in-div */
 pbc.dom.remove_children = function(parent_node) {
-  
+
   while (parent_node.hasChildNodes()) {
     parent_node.removeChild(parent_node.lastChild);
   }
@@ -1119,13 +1121,13 @@ while ($entries = $result->fetch_assoc()) {
   //// notes
   $notes = strtr($entries['notes'], array("\n"=>""));
   // &#39; is the html entity for '
-  $notes = strtr($notes, array("'"=>'&#39;'));  
+  $notes = strtr($notes, array("'"=>'&#39;'));
   $common = strtr($entries['common'], array("'"=>'&#39;'));
   $latin = $entries['latin'];
   $family = strtr($entries['family'], array("'"=>'&#39;'));
   $aliases = strtr($entries['aliases'], array("'"=>'&#39;'));
   echo <<<OUT
-    pbc.plants["$short_latin"] = 
+    pbc.plants["$short_latin"] =
     new pbc.Plant("$short_latin", $js_image_list,
                   "{$entries['color']}", "$bloom", "$inv_text", "$wi_text",
                   '$notes', "{$entries['c_value']}", "$wetland_indicator",
@@ -1136,7 +1138,7 @@ OUT;
 $result->free();
 ?>
 
-window.onload = function() {
+pbc.update_event_handler("load", window, function() {
 
   // find the right xmlhttprequest generator for this browser
   // (based on Javascript: the definitive guide by David Flanagan (O'Reilly 2006))
@@ -1159,28 +1161,20 @@ window.onload = function() {
   if (!pbc.ajax_object) {
     pbc.ajax_object = pbc.error_alert;
   }
-  
-  /* most everything should be hidden until we have a plant list,
-     since not much will work without it */
-  document.getElementById("closeups_div").style.display = "none";
-  document.getElementById('closeups_box').checked = false;
+
+  document.getElementById("closeups_box").checked = false;
   pbc.update_event_handler("click", document.getElementById("closeups_box"),
                            pbc.closeups_oncheck_function);
 
-  document.getElementById("select_form_div").style.display = 'none';
   document.getElementById("select_form_common").selected = true;
-  document.getElementById('plant_list_title_div').style.display = 'none';
-  document.getElementById('plant_list_loading').style.display = 'none';
 
   document.getElementById('blooms_box').checked = false;
-  document.getElementById("bloom_table_div").style.display = "none";
   document.getElementById('bloom_radio_date_option').checked = true;
   pbc.update_event_handler("click", document.getElementById("blooms_box"),
                            pbc.blooms_oncheck_function);
 
-  document.getElementById("footer_container").style.display = "none";
   document.getElementById('invasive_box').checked = false;
-  
+
   // set loading divs while we fetch the initial data
   pbc.set_loading("initial_plant_list_loading", "Loading plant list");
 
@@ -1193,16 +1187,22 @@ window.onload = function() {
       /* We fill in most of the fully loaded page here since until we
          get the plant list, nothing else is going to work */
 
+    document.getElementById("closeups_title").style.display = "block";
     document.getElementById("closeups_div").style.display = "block";
-
+    document.getElementById("plant_list_title").style.display = 'block';
     document.getElementById("select_form_div").style.display = 'block';
-    document.getElementById("plant_list_title_div").style.display = 'block';
+    var mql = window.matchMedia("(min-width: 800px)");
+    var mqHandler = function (mql) {
+      var display = mql.matches ? "block" : "none";
+      document.getElementById("bloom_table_div").style.display = display;
+    }
+    mql.addListener(mqHandler);
+    mqHandler(mql);
 
     document.getElementById("blooms_loading").style.display = "none";
     document.getElementById("inner_blooms_div").style.display = "none";
-    document.getElementById("bloom_table_div").style.display = "block";
 
-    document.getElementById("footer_container").style.display = "block";
+    document.getElementById("footer_wrap").style.display = "block";
 
     var sort_select_onclick_function = function() {
       var sort_value = document.getElementById("sort_value").value;
@@ -1237,7 +1237,7 @@ window.onload = function() {
     pbc.update_event_handler("click", document.getElementById("bloom_clear_checks"),
                              pbc.clear_bloom_checks);
 
-    //// Bottom bar stuff    
+    //// Bottom bar stuff
     // expand
     var expand_all_function = function() {
       for (var plant in pbc.plants) {
@@ -1256,7 +1256,7 @@ window.onload = function() {
     pbc.update_event_handler("click", document.getElementById("invasive_box"),
                              pbc.invasive_onclick_handler);
     goto_closeups_function = function() {
-      window.scrollTo(0, pbc.height_of_element(document.getElementById("closeups_div")));
+      window.scrollTo(0, pbc.height_of_element(document.getElementById("closeups_title")));
     };
     pbc.update_event_handler("click", document.getElementById("goto_closeups"),
                              goto_closeups_function);
@@ -1294,7 +1294,19 @@ window.onload = function() {
   // send a request for the initial load plant data
   request.open("GET", "pbc_flora_ajax.php?new=true&sort=common", true);
   request.send(null);
-}; // end window.onload
+
+  var notes_onclick_handler = function() {
+
+    var button_img = document.getElementById("site_notes_img");
+
+    var currently_collapsed = (button_img.src.lastIndexOf('up.png') === -1) ? true : false;
+    var notes_content = document.getElementById("site_notes_content");
+    notes_content.style.display = currently_collapsed ? 'block' : 'none';
+    button_img.src = currently_collapsed ? 'up.png' : 'down.png';
+  };
+  pbc.update_event_handler("click", document.getElementById("site_notes_button"),
+                           notes_onclick_handler);
+}); // end window.onload
 
 <?php
 
