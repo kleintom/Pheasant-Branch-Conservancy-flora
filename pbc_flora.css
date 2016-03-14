@@ -36,6 +36,13 @@ h1 a {
     font-family: georgia, serif;
 }
 
+input[type=checkbox] {
+    vertical-align: -2px;
+}
+.inline_checkbox {
+    margin-right: 3px;
+}
+
 .attention {
     color: #F1A41E
 }
@@ -44,7 +51,7 @@ h1 a {
     font-size: 2em;
     margin: 15px;
     padding: 15px;
-    border: 2px solid pink;
+    border: 2px solid red;
 }
 /* end header css */
 
@@ -83,7 +90,6 @@ h1 a {
 #closeups_box, #blooms_box {
     margin-left: 20px;
     margin-right: 10px;
-    margin-top: 8px;
 }
 
 .link_text, .bloom_link_text {
@@ -141,12 +147,28 @@ h1 a {
 }
 
     /* start closeups css */
+    #closeups_div > p {
+        margin-bottom: 8px;
+    }
+
+    #inner_closeups_div {
+        max-width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
+        text-align: center;
+    }
+
     .closeup {
         margin: 5px;
-        float: left;
+        /* If a closeup has a plant name that takes two lines then firefox
+           displays it vertically offset from the others (even though this
+           parent of the text has a fixed height...), unless we set this
+           vertical-align. */
+        vertical-align: top;
         width: 200px;
         height: 250px;
         border: 2px solid #598756;
+        display: inline-block;
     }
 
     .closeup_img {
@@ -221,8 +243,6 @@ h1 a {
         clear: both;
     }
     .notes {
-    /* hanging indent */
-        /*text-indent: -30px;*/
         margin-left: 30px;
         margin-bottom: 5px;
     }
@@ -254,23 +274,31 @@ h1 a {
     overflow: hidden;
 }
 
-.action_text {
-    cursor: pointer;
-    color: #618B61;
-}
-
-#invasive_checkbox_div, #expand_collapse_div, #goto_element_div {
-    float: left;
-    padding-top: 5px;
-}
-
 #invasive_box {
     margin-left: 10px;
     margin-right: 10px;
 }
 
+.action_text {
+    cursor: pointer;
+    color: #618B61;
+}
+
+#collapse_text {
+    color: #234323;
+    padding-left: 10px;
+    margin-left: 0;
+}
+
+#invasive_checkbox_div, #collapse_text, #goto_element_div {
+    float: left;
+    padding-top: 6px;
+}
+
 .divider {
     margin-left: 10px;
+    position: relative;
+    top: -1px;
 }
 /* end footer css */
 
@@ -279,7 +307,7 @@ h1 a {
     /* bloom_table_div is handled by js */
     .sec_title, .alias, /* secondary plant list titles and aliases */
     /* some of the bottom bar operations */
-    #invasive_checkbox_div, #expand_collapse_div, #goto_table {
+    #invasive_checkbox_div, #collapse_text, #goto_table {
         display: none;
     }
 
@@ -300,8 +328,21 @@ h1 a {
         padding: 0;
     }
 
+    input[type=checkbox] {
+        /* (This does different things on different browsers.) */
+        min-width: 20px;
+        min-height: 20px;
+        vertical-align: -5px;
+    }
+    select {
+        height: 30px;
+    }
+    #plant_count {
+        line-height: 30px;
+    }
     .text {
         margin-left: 12px;
+        margin-right: 8px;
         margin-top: 4px;
     }
 
@@ -353,15 +394,28 @@ h1 a {
 
         .outer {
             margin: 0px 4px;
-            padding: 5px 5px 5px 32px;
+            padding: 5px 5px 5px 44px;
+        }
+        span.expand_collapse {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            margin-left: -40px;
+            margin-right: 4px;
+        }
+        span.expand {
+            background: url(expand-rl.png);
+        }
+        span.collapse {
+            background: url(collapse-rl.png);
         }
         .inner {
             margin-left: 8px;
             margin-right: 8px;
         }
-        .expand_collapse {
-            margin-left: -30px;
-            margin-right: 4px;
+        .inner a {
+            display: inline-block;
+            margin-bottom: 8px;
         }
         /* firefox and chrome differ here, but both will do what I want with
            this margin (as long as images have width > ~400 there can't be
@@ -371,15 +425,15 @@ h1 a {
             margin: 5px 0;
         }
         /* end plant list css */
-    /* end content css */
-
-    /* start footer css */
-    .bottom_text {
+    #links_div > p {
         margin-left: 8px;
         margin-right: 4px;
         padding-top: 4px;
         padding-bottom: 8px;
     }
+    /* end content css */
+
+    /* start footer css */
     #goto_element_div {
         width: 100%;
         display: table;
@@ -406,10 +460,10 @@ h1 a {
         margin-bottom: 50px;
     }
     .outer {
-        padding: 5px 5px 5px 38px;
+        padding: 5px 5px 5px 48px;
     }
-    .expand_collapse {
-        margin-left: -32px;
+    span.expand_collapse {
+        margin-left: -42px;
         margin-right: 6px;
     }
     /* show secondary titles and aliases */
@@ -423,8 +477,7 @@ h1 a {
     .alias {
         display: inline;
     }
-    #invasive_checkbox_div, #expand_collapse_div,
-    .divider {
+    #invasive_checkbox_div {
         display: inline-block;
     }
     #goto_element_div {
@@ -441,11 +494,17 @@ h1 a {
         padding-top: 4px;
         padding-bottom: 8px;
     }
+    .divider {
+        position: relative;
+        top: 0px;
+    }
 }
 
 @media (min-width: 700px) and (max-width: 799px) {
-    #expand_collapse_div {
+    #collapse_text {
         display: inline-block;
+        position: relative;
+        top: 1px;
     }
 }
 
@@ -520,9 +579,18 @@ h1 a {
             margin: 0px 10px;
             padding: 5px 5px 5px 40px;
         }
-        .expand_collapse {
+        span.expand_collapse {
+            display: inline-block;
+            width: 26px;
+            height: 26px;
             margin-left: -34px;
             margin-right: 8px;
+        }
+        span.expand {
+            background: url(expand-r.png);
+        }
+        span.collapse {
+            background: url(collapse-r.png);
         }
         .inner {
             margin-left: 20px;
@@ -537,11 +605,10 @@ h1 a {
         padding-bottom: 12px;
     }
 
-    .bottom_text {
+    #links_div > p {
         margin-left: 16px;
         margin-right: 8px;
-        padding-top: 4px;
-        padding-bottom: 8px;
+        padding-top: 2px;
     }
 
     .action_text {
@@ -585,17 +652,6 @@ li ul {
     padding-right: 40px;
 }
 
-.inline_checkbox {
-    margin-right: 3px;
-}
-
-#inner_closeups_div {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-left: 10px;
-    float: left;
-}
-
 .bloom_radio {
     margin-left: 15px;
     margin-right: 8px;
@@ -603,12 +659,6 @@ li ul {
 
 #bloom_table_div {
     margin-top: 20px;
-}
-
-.expand_collapse_action_text {
-    padding-left: 10px;
-    cursor: pointer;
-    color: #234323;
 }
 
 .anchor_link {

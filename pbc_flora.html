@@ -7,6 +7,8 @@
   <title>PBC flora</title>
   <link rel="stylesheet" href="pbc_flora.css" />
   <script src="mq_polyfill.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="jquery-1.12.0.js"><\/script>')</script>
   <script src="pbc_flora_js.php"></script>
 </head>
 
@@ -46,7 +48,7 @@
     <span id="site_notes_button">
       Notes
       <img src="down.png" alt="expand or collapse Notes section"
-           class="expand_collapse_section" id="site_notes_img"></img>
+           class="expand_collapse_section" id="site_notes_img">
     </span>
   </div>
 
@@ -95,12 +97,12 @@
       ordered by flower color.  <span class="attention">This may be faster than
       browsing the Full Plant List one by one</span>.
     </p>
-    <form id="closeups_form" action="">
-      <p>
-        <input type="checkbox" id="closeups_box" value="closeups" />
+    <div>
+      <label>
+        <input type="checkbox" id="closeups_box" value="closeups">
         Display select flower closeups
-      </p>
-    </form>
+      </label>
+    </div>
     <div class="empty_inline_loading" id="closeups_loading"></div>
     <div class="text" id="closeup_checks">
       <span class="link_text" id="open_checks">
@@ -114,22 +116,18 @@
   <!-- plant list -->
   <div class="text_title" id="plant_list_title">Full Plant List</div>
   <div id="select_form_div">
-    <form id="select_form" action="">
-      <p>
-        <select class="select" id="sort_value" name="sort_value">
-          <option id='select_form_common' value="common"
-                  selected="selected">Order by common name</option>
-          <option value="latin">Order by scientific name</option>
-          <option value="family">Order by family name</option>
-          <option value="flower">Order by flower color</option>
-          <option value="bloom">Order by bloom period</option>
-          <option value="w_i">Order by wetland indicator</option>
-          <option value="c_value">Order by C value</option>
-        </select>
-      </p>
-    </form>
+    <select class="select" id="sort_value" name="sort_value">
+      <option id='select_form_common' value="common"
+              selected="selected">Order by common name</option>
+      <option value="latin">Order by scientific name</option>
+      <option value="family">Order by family name</option>
+      <option value="flower">Order by flower color</option>
+      <option value="bloom">Order by bloom period</option>
+      <option value="w_i">Order by wetland indicator</option>
+      <option value="c_value">Order by C value</option>
+    </select>
   </div>
-  <div id="plant_count"></div>
+  <span id="plant_count"></span>
   <div class="loading" id="initial_plant_list_loading"></div>
   <div class="inline_loading" id="plant_list_loading"></div>
   <div id="plant_list_div"></div>
@@ -141,12 +139,12 @@
       Check the box below to display a table of bloom periods for the
       species in the plant list.
     </p>
-    <form id="blooms_form" action="">
-      <p>
-        <input type="checkbox" id="blooms_box" value="blooms"/>
+    <div>
+      <label>
+        <input type="checkbox" id="blooms_box" value="blooms">
         Display blooming periods table
-      </p>
-    </form>
+      </label>
+    </div>
     <div class="empty_inline_loading" id="blooms_loading"></div>
     <div id="inner_blooms_div">
       <!-- just the header and an empty body - the rest is filled in later -->
@@ -157,18 +155,20 @@
           </tr>
           <tr>
             <th class="radio_title" scope="col" colspan="30">
-              <form id="bloom_form" action="">
-                <p>
-                  Order by:
+              <div>
+                Order by:
+                <label>
                   <input type="radio" class="bloom_radio" name="bloom_order"
                          id="bloom_radio_date_option" value="bloom,common"
-                         checked="checked"/>
+                         checked="checked">
                   bloom start date
+                </label>
+                <label>
                   <input type="radio" class="bloom_radio" name="bloom_order"
-                         id="bloom_radio_common_option" value="common" />
+                         id="bloom_radio_common_option" value="common">
                   common name
-                </p>
-              </form>
+                </label>
+              </div>
             </th>
           </tr>
           <tr>
@@ -189,7 +189,7 @@
             <th class="table_header" scope="col" colspan="4">Sep</th> <th class="table_header" scope="col" colspan="4">Oct</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="blooms_body">
           <!-- this will be filled in later, but to validate there must be some content now -->
           <tr><td>&nbsp;</td></tr>
         </tbody>
@@ -201,21 +201,44 @@
   <div id="links_div">
     <div class="text_title">Links</div>
     <p class="bottom_text">
-      <a href="http://www.efloras.org/flora_page.aspx?flora_id=1">EFlora: Flora of North America</a> - not yet complete but for the plants covered a thorough technical treatment.<br />
-      <!--<a href="http://wisplants.uwsp.edu/namesearch.html">Robert W. Freckmann Herbarium, UW Stevens Point</a><br />-->
-      <a href="http://wisflora.herbarium.wisc.edu/index.php">Flora of Wisconsin</a><br />
-      <a href="http://www.botany.wisc.edu/wisflora/">Wisflora: Wisconsin Vascular Plant Species (UW Madison herbarium)</a><br />
-      <a href="http://www.illinoiswildflowers.info/">Illinois wildflowers</a><br />
-      <a href="http://michiganflora.net/home.aspx">Michigan flora - University of Michigan Herbarium</a><br />
-      <a href="http://www.minnesotawildflowers.info/page/home">Minnesota wildflowers</a><br />
-      <a href="http://www.missouriplants.com/">Missouri plants</a><br />
-      <a href="http://www.eeob.iastate.edu/research/IowaGrasses">Grasses of Iowa</a><br />
-      <a href="http://www.kswildflower.org/index.php">Kansas wildflowers and grasses</a><br />
-      <a href="http://dnr.wi.gov/topic/Invasives/">Wisconsin invasives (DNR)</a><br />
+      <a href="http://www.efloras.org/flora_page.aspx?flora_id=1">EFlora: Flora of North America</a> - not yet complete but for the plants covered a thorough technical treatment.
     </p>
+    <!--<a href="http://wisplants.uwsp.edu/namesearch.html">Robert W. Freckmann Herbarium, UW Stevens Point</a><br />-->
+    <p>
+      <a href="http://wisflora.herbarium.wisc.edu/index.php">Flora of Wisconsin</a>
+    </p>
+    <p>
+      <a href="http://www.botany.wisc.edu/wisflora/">Wisflora: Wisconsin Vascular Plant Species (UW Madison herbarium)</a>
+    </p>
+    <p>
+      <a href="http://www.illinoiswildflowers.info/">Illinois wildflowers</a>
+    </p>
+    <p>
+      <a href="http://michiganflora.net/home.aspx">Michigan flora - University of Michigan Herbarium</a>
+    </p>
+    <p>
+      <a href="http://www.minnesotawildflowers.info/page/home">Minnesota wildflowers</a>
+    </p>
+    <p>
+      <a href="http://www.missouriplants.com/">Missouri plants</a>
+    </p>
+    <p>
+      <a href="http://www.eeob.iastate.edu/research/IowaGrasses">Grasses of Iowa</a>
+    </p>
+    <p>
+      <a href="http://www.kswildflower.org/index.php">Kansas wildflowers and grasses</a>
+    </p>
+    <p>
+      <a href="http://dnr.wi.gov/topic/Invasives/">Wisconsin invasives (DNR)</a>
+    </p>
+
+    <br>
+
     <p class="bottom_text">
       <a href="https://web.archive.org/web/20100925100044/http://wisplants.uwsp.edu/wetind.html">Wetland
-	Indicators</a><br />
+	Indicators</a>
+    </p>
+    <p>
       <a href="https://web.archive.org/web/20101212205245/http://wisplants.uwsp.edu/WFQA.html">Coefficients
 	of Conservatism</a>, also known as C Values
     </p>
@@ -226,14 +249,14 @@
 <div id="footer_wrap">
   <div id="footer">
     <div id="invasive_checkbox_div">
-      <input type="checkbox" id="invasive_box" value="invasive" />Non-natives only
+      <label>
+        <input type="checkbox" id="invasive_box" value="invasive">
+        Non-natives only
+      </label>
       <span class="divider">::</span>
     </div>
-    <div id="expand_collapse_div">
-      <span class="expand_collapse_action_text" id="collapse_text">
-        Collapse all
-      </span>
-      <span class="divider">::</span>
+    <div class="action_text" id="collapse_text">
+      Collapse all<span class="divider">::</span>
     </div>
     <div id="goto_element_div">
       <div class="action_text" id="goto_closeups">Closeups</div>
